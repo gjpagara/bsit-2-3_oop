@@ -1,19 +1,37 @@
 import java.util.Scanner;
 
-public class SumNumbers {
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        int total = 0;
+public class Main {
 
-        for (int i = 1; i <= 5; i++) {
-            System.out.print("Enter number " + i + ": ");
-            int num = input.nextInt();
-            total += num;
+    public static void main(String[] args) {
+        GradeCalculator calculator = new GradeCalculator();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter student name: ");
+        String studentName = scanner.nextLine();
+        if (studentName.trim().isEmpty()) {
+            studentName = "Juan Dela Cruz";
         }
 
-        System.out.println("Total Number: " + total);
+        System.out.print("Enter grades separated by spaces: ");
+        String[] inputGrades = scanner.nextLine().split(" ");
+        double[] grades = new double[inputGrades.length];
 
-        input.close();
+        try {
+            for (int i = 0; i < inputGrades.length; i++) {
+                grades[i] = Double.parseDouble(inputGrades[i]);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter numeric grades only.");
+            scanner.close();
+            return;
+        }
+
+        double average = calculator.calculateAverage(grades);
+        String letterGrade = calculator.getLetterGrade(average);
+
+        calculator.displayResult(studentName, average);
+        calculator.displayResult(studentName, average, letterGrade);
+
+        scanner.close();
     }
 }
-
